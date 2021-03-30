@@ -32,23 +32,24 @@ int main()
 	while(1)
 	{
 		printf("SSAFY > ");
-		scanf("%s", history[top++]);
-		if(strcmp(history[top-1], "exit")==0) break;
+		char line[100];
+		scanf("%s", line);
+		if(strcmp(line, "exit")==0) break;
 
-		int len=0, num=0;
-		while(history[top-1][len++]);
-
-		if(history[top-1][0]=='!')
+		if(line[0]=='!')
 		{
-			char tmp[100];
-			strcpy(tmp,&history[top-1][1]);
-			num = atoi(tmp);
-			top--;
+			int num;
+			num = atoi(&line[1]);
 			if(num>0&&num<top)	doSome(num);
 			else printf("ERROR(History Out of Bounds)\n");
 		}
-		else doSome(top-1);
+		else 
+		{
+			strcpy(history[top],line);
+			doSome(top++);
+		}
 
 	}
 	return 0;
 }
+
