@@ -10,34 +10,20 @@
 char history[1000][100];
 int top=1;
 
-void getSome(int num)
+void doSome(int num)
 {
-	if(num)
+	if(strcmp(history[num],"date")==0) system("date");
+	else if(strcmp(history[num],"uptime")==0) system("uptime");
+	else if(strcmp(history[num],"ls")==0) system("ls -al");
+	else if(strcmp(history[num],"log")==0) system("dmesg");
+	else if(strcmp(history[num],"history")==0)
+		for(int prev=1; prev<top; prev++) 
+			printf("%d\t%s\n",prev,history[prev]);
+	else if(strcmp(history[num],"hclear")==0) top=1;
+	else 
 	{
-		if(strcmp(history[num],"date")==0) system("date");
-		else if(strcmp(history[num],"uptime")==0) system("uptime");
-		else if(strcmp(history[num],"ls")==0) system("ls -al");
-		else if(strcmp(history[num],"log")==0) system("dmesg");
-		else if(strcmp(history[num],"history")==0)
-			for(int prev=1; prev<top; prev++) 
-				printf("%d\t%s\n",prev,history[prev]);
-		else printf("ERROR\n");
-	}
-	else
-	{
-		if(strcmp(history[top-1],"date")==0) system("date");
-		else if(strcmp(history[top-1],"uptime")==0) system("uptime");
-		else if(strcmp(history[top-1],"ls")==0) system("ls -al");
-		else if(strcmp(history[top-1],"log")==0) system("dmesg");
-		else if(strcmp(history[top-1],"history")==0)
-			for(int prev=1; prev<top; prev++) 
-				printf("%d\t%s\n",prev,history[prev]);
-		else if(strcmp(history[top-1],"hclear")==0) top=1;
-		else 
-		{
-			top--;
-			printf("ERROR(No Such File exist.)\n");
-		}
+		top--;
+		printf("ERROR(No Such File Exist.)\n");
 	}
 }
 
@@ -58,10 +44,10 @@ int main()
 			strcpy(tmp,&history[top-1][1]);
 			num = atoi(tmp);
 			top--;
-			if(num>0&&num<top)	getSome(num);
+			if(num>0&&num<top)	doSome(num);
 			else printf("ERROR(History Out of Bounds)\n");
 		}
-		else getSome(top-1);
+		else doSome(top-1);
 
 	}
 	return 0;
