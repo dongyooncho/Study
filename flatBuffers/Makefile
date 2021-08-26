@@ -1,25 +1,21 @@
-#include<iostream>
-using namespace std;
+CXX		=g++
+SRCS		=$(wildcard *.cpp) $(wildcard *.c)
+OBJS		=$(SRCS:.cpp=.o)
+TARGET		=out
+LIBS		=-lprint
+LIB_DIRS	=-L./lib
+INC		=-I./include
 
-#include<flatbuffers/flatbuffers.h>
-#include"lib/playerInfo_generated.h"
+all:$(TARGET) 
+#	$(CXX) -o $(TARGET) $(OBJS) $(INC) $(LIB_DIRS) $(LIBS)
+	$(CXX) -o $(TARGET) $(OBJS) $(INC) $(LIB_DIRS)
+#	$(CXX) -o $(TARGET) $(OBJS) $(INC)
 
-int main()
-{
-	cout<<"CHANGE"<<endl;
-	flatbuffers::FlatBufferBuilder builder;
-	auto name = builder.CreateString("Foo");
-	int level = 99;
-	builder.Finish(CreatePlayerInfo(builder, name, level));
+$(TARGET):$(SRCS) 
+#	$(CXX) -c $(SRCS) $(INC) $(LIB_DIRS) $(LIBS)
+	$(CXX) -c $(SRCS) $(INC) $(LIB_DIRS)
+#	$(CXX) -c $(SRCS) $(INC)
 
-	const uint8_t* data = builder.GetBufferPointer();
-	int builderSize = builder.GetSize();
-
-	const PlayerInfo* plyaerinfo = GetPlayerInfo(data);
-	
-
-	cout << "name: " << plyaerinfo->name()->str()<< endl;
-	cout << "level: " << plyaerinfo->level()<< endl;
-	
-	return 0;
-}
+clean:
+	rm -f $(TARGET)
+	rm -f *.o
